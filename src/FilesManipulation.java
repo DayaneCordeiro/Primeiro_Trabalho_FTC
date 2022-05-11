@@ -1,6 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,21 +6,21 @@ public class FilesManipulation {
     public static List<State> statesReader(String path) throws IOException {
         BufferedReader buffer = new BufferedReader(new FileReader(path));
 
-        String id          = null;
-        String name        = null;
-        boolean isInitial  = false;
-        boolean isFinal    = false;
+        String id = null;
+        String name = null;
+        boolean isInitial = false;
+        boolean isFinal = false;
 
-        String line        = "";
+        String line = "";
         List<State> states = new ArrayList<State>();
 
         while (true) {
             if (line != null) {
                 // Lê o começo de um estado, coleta o id e o nome
                 if (line.contains("<state")) {
-                    int idIndex        = line.indexOf("id=");
+                    int idIndex = line.indexOf("id=");
                     int nameStartIndex = line.indexOf("name=");
-                    int nameEndIndex   = line.indexOf(">");
+                    int nameEndIndex = line.indexOf(">");
 
                     id = line.substring((idIndex + 4), (nameStartIndex - 2));
                     name = line.substring((nameStartIndex + 6), (nameEndIndex - 1));
@@ -49,7 +47,7 @@ public class FilesManipulation {
 
                     // Volta para os valores originais para não gerar erros
                     isInitial = false;
-                    isFinal   = false;
+                    isFinal = false;
                 }
             } else {
                 break;
@@ -67,10 +65,10 @@ public class FilesManipulation {
         BufferedReader buffer = new BufferedReader(new FileReader(path));
 
         String fromState = null;
-        String toState   = null;
+        String toState = null;
         String valueRead = null;
 
-        String line        = "";
+        String line = "";
         List<Transition> transitions = new ArrayList<Transition>();
 
         while (true) {
@@ -79,7 +77,7 @@ public class FilesManipulation {
                 // Coleta o from de uma transição
                 if (line.contains("<from>")) {
                     int fromIndexStart = line.indexOf("<from>");
-                    int fromIndexEnd   = line.indexOf("</from>");
+                    int fromIndexEnd = line.indexOf("</from>");
 
                     fromState = line.substring((fromIndexStart + 6), (fromIndexEnd));
                 }
@@ -87,7 +85,7 @@ public class FilesManipulation {
                 // Coleta o to de uma transição
                 if (line.contains("<to>")) {
                     int toIndexStart = line.indexOf("<to>");
-                    int toIndexEnd   = line.indexOf("</to>");
+                    int toIndexEnd = line.indexOf("</to>");
 
                     toState = line.substring((toIndexStart + 4), (toIndexEnd));
                 }
@@ -95,11 +93,9 @@ public class FilesManipulation {
                 // Coleta o read de uma transição
                 if (line.contains("<read>")) {
                     int readIndexStart = line.indexOf("<read>");
-                    int readIndexEnd   = line.indexOf("</read>");
+                    int readIndexEnd = line.indexOf("</read>");
 
                     valueRead = line.substring((readIndexStart + 6), (readIndexEnd));
-
-                    System.out.println(valueRead);
                 }
 
                 // Significa que acabou de ler a transição então cria um objeto
@@ -121,4 +117,32 @@ public class FilesManipulation {
 
         return transitions;
     }
+
+    public static void copySameFileToOutput(String path) throws IOException {
+        File originFile = new File(path);
+
+        FileReader file = new FileReader(originFile);
+
+        BufferedReader bufferedReader = new BufferedReader(file);
+
+        StringBuilder buffer = new StringBuilder();
+
+        String line = "";
+
+        while ((line = bufferedReader.readLine()) != null) {
+            buffer.append(line).append("\n");
+        }
+
+        file.close();
+        bufferedReader.close();
+
+        File destinyFile = new File("output/AFD.jff");
+
+        FileWriter writer = new FileWriter(destinyFile);
+
+        writer.write(buffer.toString());
+        writer.flush();
+        writer.close();
+    }
 }
+
