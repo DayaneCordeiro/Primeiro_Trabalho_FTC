@@ -144,5 +144,19 @@ public class FilesManipulation {
         writer.flush();
         writer.close();
     }
+
+    public void writeAutomatonConvertedFile() throws IOException {
+        FileHelper fileHelper = new FileHelper();
+
+        File destinyFile = new File(fileHelper.OUTPUT_PATH);
+
+        FileWriter writer = new FileWriter(destinyFile);
+
+        // Escrevendo dados no arquivo de saída
+        writer.write(fileHelper.HEADER);
+
+        writer.flush();
+        writer.close();
+    }
 }
 
