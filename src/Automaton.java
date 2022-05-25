@@ -97,63 +97,92 @@ public class Automaton {
          */
 
         // criação da estrutura que irá conter os estados do automato não deterministico
-        ArrayList<State> currentStatesControl = new ArrayList<State>();
+        ArrayList<String> currentStatesControl = new ArrayList<String>();
         ArrayList<Transition> currentTransitionsControl = new ArrayList<Transition>();
 
-        ArrayList<State> automatonFinalStates = new ArrayList<State>();
-        ArrayList<String> labels = new ArrayList<String>();
+        // Pega o primeiro estado do automato e insere na variável de controle
+        currentStatesControl.add(this.states.get(0).id);
 
-        int index = 0;
+        while (!currentStatesControl.isEmpty()) {
+            // percorrer todos os estados atuais ([A] - tem só um estado [ABC] - tem mais de um estado pra avaliar)
+            for (String currentState : currentStatesControl) {
 
-        currentStatesControl = this.states;
-        currentTransitionsControl = this.transitions;
-
-        while (currentStatesControl.size() > 0) {
-            StringBuilder labelToValueZero = new StringBuilder();
-            StringBuilder labelToValueOne = new StringBuilder();
-
-            // testa onde ele pode ir com o 0
-            for (Transition transition : currentTransitionsControl) {
-                if (Objects.equals(transition.fromState, currentStatesControl.get(0).id)) {
-                    if (Objects.equals(transition.valueRead, "0")) {
-                        if (!labelToValueZero.isEmpty())
-                            labelToValueZero.append(","); // concatenar no inicio pra evitar sobrar vírgula no final
-
-                        labelToValueZero.append(transition.toState); // concatenar no inicio pra evitar sobrar vírgula no final
-
-                        State newState = new State(
-                                Integer.toString(this.states.size() + 1),
-                                "q" + this.states.size() + 1,
-                                false,
-                                false
-                        );
-
-                        newState.setLabel(String.valueOf(labelToValueZero));
-
-                        currentStatesControl.add(newState);
-                    } else if (Objects.equals(transition.valueRead, "1")) {
-                        if (!labelToValueOne.isEmpty())
-                            labelToValueOne.append(",");
-
-                        labelToValueOne.append(transition.toState);
-
-                        State newState = new State(
-                                Integer.toString(this.states.size() + 1),
-                                "q" + this.states.size() + 1,
-                                false,
-                                false
-                        );
-
-                        newState.setLabel(String.valueOf(labelToValueOne));
-
-                        currentStatesControl.add(newState);
+                // percorrer as transições procurando todas em que o fromState é esse e ver se é 0 ou 1
+                for (Transition transition : this.transitions) {
+                    if (transition.fromState == currentState) {
+                        if (transition.valueRead == "0") {
+                            // faz algo
+                        } else if (transition.valueRead == "1") {
+                            // faz outro algo
+                        }
                     }
                 }
-            }
 
-            if (!labelToValueZero.isEmpty()) {
-                if (!labels.contains(String.valueOf(labelToValueZero)))
-                    labels.add(String.valueOf(labelToValueZero));
+            }
+        }
+
+
+
+
+
+
+
+
+
+//        ArrayList<State> automatonFinalStates = new ArrayList<State>();
+//        ArrayList<String> labels = new ArrayList<String>();
+//
+//        int index = 0;
+//
+//        currentStatesControl = this.states;
+//        currentTransitionsControl = this.transitions;
+//
+//        while (currentStatesControl.size() > 0) {
+//            StringBuilder labelToValueZero = new StringBuilder();
+//            StringBuilder labelToValueOne = new StringBuilder();
+//
+//            // testa onde ele pode ir com o 0
+//            for (Transition transition : currentTransitionsControl) {
+//                if (Objects.equals(transition.fromState, currentStatesControl.get(0).id)) {
+//                    if (Objects.equals(transition.valueRead, "0")) {
+//                        if (!labelToValueZero.isEmpty())
+//                            labelToValueZero.append(","); // concatenar no inicio pra evitar sobrar vírgula no final
+//
+//                        labelToValueZero.append(transition.toState); // concatenar no inicio pra evitar sobrar vírgula no final
+//
+//                        State newState = new State(
+//                                Integer.toString(this.states.size() + 1),
+//                                "q" + this.states.size() + 1,
+//                                false,
+//                                false
+//                        );
+//
+//                        newState.setLabel(String.valueOf(labelToValueZero));
+//
+//                        currentStatesControl.add(newState);
+//                    } else if (Objects.equals(transition.valueRead, "1")) {
+//                        if (!labelToValueOne.isEmpty())
+//                            labelToValueOne.append(",");
+//
+//                        labelToValueOne.append(transition.toState);
+//
+//                        State newState = new State(
+//                                Integer.toString(this.states.size() + 1),
+//                                "q" + this.states.size() + 1,
+//                                false,
+//                                false
+//                        );
+//
+//                        newState.setLabel(String.valueOf(labelToValueOne));
+//
+//                        currentStatesControl.add(newState);
+//                    }
+//                }
+//            }
+//
+//            if (!labelToValueZero.isEmpty()) {
+//                if (!labels.contains(String.valueOf(labelToValueZero)))
+//                    labels.add(String.valueOf(labelToValueZero));
 
 //                public String id;
 //                public String name;
@@ -170,21 +199,21 @@ public class Automaton {
 //
 //                ));
             }
-
-            if (!labelToValueOne.isEmpty()) {
-                if (!labels.contains(String.valueOf(labelToValueZero)))
-                    labels.add(String.valueOf(labelToValueOne));
-            }
-
-            currentStatesControl.remove(0);
-            index++;
-        }
-
-        for (String label : labels) {
-            System.out.println(label);
-        }
-
-        FilesManipulation filesManipulation = new FilesManipulation();
-        filesManipulation.writeAutomatonConvertedFile();
-    }
+//
+//            if (!labelToValueOne.isEmpty()) {
+//                if (!labels.contains(String.valueOf(labelToValueZero)))
+//                    labels.add(String.valueOf(labelToValueOne));
+//            }
+//
+//            currentStatesControl.remove(0);
+//            index++;
+//        }
+//
+//        for (String label : labels) {
+//            System.out.println(label);
+//        }
+//
+//        FilesManipulation filesManipulation = new FilesManipulation();
+//        filesManipulation.writeAutomatonConvertedFile();
+//    }
 }
