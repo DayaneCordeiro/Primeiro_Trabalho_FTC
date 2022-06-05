@@ -13,13 +13,11 @@ public class Automaton {
     public Automaton() {
     }
 
+    /**
+     * Se existir mais de uma transição com o mesmo valor saindo do estado ele reconhece como AFN, caso contrário, a entrada já é AFD
+     * @return boolean
+     */
     public boolean verifyIfAlreadyAFD() {
-        // Algoritmo para identificar se já é um AFD
-        // Conhecer os estados
-        // Conhecer as transições
-        // Verificar se existem mais de uma transição saindo de um estado com um mesmo valor
-        // Se não houver é AFD -> retorna o mesmo arquivo recebido
-
         List<String> readValues = new ArrayList<String>();
 
         for (State state : this.states) {
@@ -29,6 +27,7 @@ public class Automaton {
                     // verifica se já existe o valor de transição saindo do estado
                     String transitionValue = transition.valueRead;
 
+                    // Se o valor read estiver duplicado é AFN
                     if (readValues.contains(transitionValue)) {
                         return false;
                     }
@@ -43,6 +42,10 @@ public class Automaton {
         return true;
     }
 
+    /**
+     * Converte o automato AFN para AFD e escreve no arquivo de saída
+     * @throws IOException
+     */
     public void convertToAFD() throws IOException {
         Automaton finalAutomaton = new Automaton();
 
@@ -60,7 +63,6 @@ public class Automaton {
         StringBuilder labelToOne = null;
 
         int stateIndexControl = 1;
-
         int stateIndex = 0;
 
         while (stateIndex < finalAutomaton.states.size()) {
@@ -68,28 +70,20 @@ public class Automaton {
             transitionsToZero.clear();
             transitionsToOne.clear();
 
-            // tratando as transições com 0
+            // Percorre cada label do estado verificando onde elas chegam com transição 0 e transição 1
             for (String currentLabel : labels) {
                 for (Transition transition : this.transitions) {
                     if (Objects.equals(transition.fromState, currentLabel)
                             && Objects.equals(transition.valueRead, "0")) {
 
+                        // Se a transição ainda não esxistir para 0, escreve no array de controle de transições
                         if (!transitionsToZero.contains(transition.toState)) {
                             transitionsToZero.add(transition.toState);
                         }
-
-                        System.out.println("=========== inicio");
-                        for (int i = 0; i < transitionsToZero.size(); i++) {
-                            System.out.println("iteracao: " + i);
-                            System.out.println(String.valueOf(transitionsToZero.get(i)));
-                        }
-                        System.out.println("--------- fim");
-
-
-
                     } else if (Objects.equals(transition.fromState, currentLabel)
                             && Objects.equals(transition.valueRead, "1")) {
 
+                        // Se a transição ainda não esxistir para 1, escreve no array de controle de transições
                         if (!transitionsToOne.contains(transition.toState)) {
                             transitionsToOne.add(transition.toState);
                         }
@@ -97,69 +91,76 @@ public class Automaton {
                 }
             }
 
+            // Ordena o array de controle de transições de zero e um para padronizar e não duplicar labels
             Collections.sort(transitionsToZero);
             Collections.sort(transitionsToOne);
 
+            // Escreve os valores na label das transições com 0
             for (String s : transitionsToZero) {
                 if (labelToZero != null) {
                     labelToZero.insert(0, s + ",");
                 } else {
-                    labelToZero = new StringBuilder(s);          // se a label ainda estiver vazia, só insere o novo dado
+                    labelToZero = new StringBuilder(s);
                 }
             }
 
+            // Escreve os valores na label das transições com 1
             for (String s : transitionsToOne) {
                 if (labelToOne != null) {
                     labelToOne.insert(0, s + ",");
                 } else {
-                    labelToOne = new StringBuilder(s);          // se a label ainda estiver vazia, só insere o novo dado
+                    labelToOne = new StringBuilder(s);
                 }
             }
 
-            System.out.println("index: " + stateIndex);
-            System.out.println("label to zero: " + labelToZero);
-            System.out.println("label to one: " + labelToOne);
-
-            // verificando se a label ja existe no automato atual
+            // Manipulando os dados que foram coletados das transições com o zero
+            // Verifica se algum estado do automato final já possui essa label para que não existam estados duplicados
             if (statesAuxControll.contains(String.valueOf(labelToZero))) {
                 String destinyStateId = getAutomatonStateIdByLabel(String.valueOf(labelToZero), finalAutomaton);
 
+                // Se a label já existir no automato final, apenas cria uma nova transição para esse estado com o valor 0
                 finalAutomaton.transitions.add(new Transition(Integer.toString(stateIndex), destinyStateId, "0"));
             } else {
                 boolean isFinal = verifyIfIsFinalState(transitionsToZero);
 
-                // cria o novo estado
+                // Caso o automato final não tenha nenhum estado com a label do zero, cria-se um novo estado
                 finalAutomaton.states.add(new State(Integer.toString(stateIndexControl),
                         "q" + stateIndexControl,
                         false,
                         isFinal
                 ));
 
+                // Insere a label do zero no estado que foi criado
                 finalAutomaton.states.get(stateIndexControl).setLabel(String.valueOf(labelToZero));
 
-                // cria a nova transição
+                // Cria a transição para o novo estado com o valor 0
                 finalAutomaton.transitions.add(new Transition(Integer.toString(stateIndex), Integer.toString(stateIndexControl), "0"));
 
                 stateIndexControl++;
                 statesAuxControll.add(String.valueOf(labelToZero));
             }
 
+            // Manipulando os dados que foram coletados das transições com o um
+            // Verifica se algum estado do automato final já possui essa label para que não existam estados duplicados
             if (statesAuxControll.contains(String.valueOf(labelToOne))) {
                 String destinyStateId = getAutomatonStateIdByLabel(String.valueOf(labelToOne), finalAutomaton);
+
+                // Se a label já existir no automato final, apenas cria uma nova transição para esse estado com o valor 1
                 finalAutomaton.transitions.add(new Transition(Integer.toString(stateIndex), destinyStateId, "1"));
             } else {
                 boolean isFinal = verifyIfIsFinalState(transitionsToOne);
 
-                // cria o novo estado
+                // Caso o automato final não tenha nenhum estado com a label do um, cria-se um novo estado
                 finalAutomaton.states.add(new State(Integer.toString(stateIndexControl),
                         "q" + stateIndexControl,
                         false,
                         isFinal
                 ));
 
+                // Insere a label do um no estado que foi criado
                 finalAutomaton.states.get(stateIndexControl).setLabel(String.valueOf(labelToOne));
 
-                // cria a nova transição
+                // Cria a transição para o novo estado com o valor 1
                 finalAutomaton.transitions.add(new Transition(Integer.toString(stateIndex), Integer.toString(stateIndexControl), "1"));
 
                 stateIndexControl++;
@@ -171,10 +172,15 @@ public class Automaton {
             labelToOne = null;
         }
 
-        // Escrever automato no arquivo
+        // Escreve o automato final no arquivo de saída
         FilesManipulation.writeAutomatonConvertedFile(finalAutomaton);
     }
 
+    /**
+     * Verifica se o estado atual está entre os estados finais do automato original
+     * @param stateIds
+     * @return boolean
+     */
     public boolean verifyIfIsFinalState(ArrayList<String> stateIds) {
         for (String currentState : stateIds) {
             for (State state : this.states) {
@@ -189,6 +195,12 @@ public class Automaton {
         return false;
     }
 
+    /**
+     * Retorna o id do estado do automato final fazendo uma busca pela sua label
+     * @param label
+     * @param automaton
+     * @return stateID
+     */
     public String getAutomatonStateIdByLabel(String label, Automaton automaton) {
         for (State state : automaton.states) {
             if (Objects.equals(state.label, label)) {
@@ -198,6 +210,4 @@ public class Automaton {
 
         return null;
     }
-
-
 }
