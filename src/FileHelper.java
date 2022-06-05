@@ -1,6 +1,6 @@
 public class FileHelper {
     final String OUTPUT_PATH = "output/AFD.jff";
-    final String INPUT_PATH = "test_JFlap_AFN.jff";
+    final String INPUT_PATH = "test_JFlap_AFN_3.jff";
 
     final String HEADER =
             "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><!--Created with JFLAP 6.4.--><structure>&#13;\n" +
