@@ -145,7 +145,7 @@ public class FilesManipulation {
         writer.close();
     }
 
-    public void writeAutomatonConvertedFile() throws IOException {
+    public static void writeAutomatonConvertedFile(Automaton automaton) throws IOException {
         FileHelper fileHelper = new FileHelper();
 
         File destinyFile = new File(fileHelper.OUTPUT_PATH);
@@ -154,6 +154,28 @@ public class FilesManipulation {
 
         // Escrevendo dados no arquivo de saída
         writer.write(fileHelper.HEADER);
+
+        for (State state : automaton.states) {
+            writer.write("\n        <state id=\"" + state.id + "\" name=\"" + state.name + "\">&#13;");
+            writer.write(fileHelper.COORDINATE_x);
+            writer.write(fileHelper.COORDINATE_Y);
+            writer.write("\n            <label>" + state.label + "</label>&#13;");
+            writer.write((state.isInitial) ? fileHelper.INITIAL_FLAG : "");
+            writer.write((state.isFinal) ? fileHelper.FINAL_FLAG : "");
+            writer.write(fileHelper.END_STATE);
+        }
+
+        writer.write(fileHelper.TRANSITIONS_HEADER);
+
+        for (Transition transition : automaton.transitions) {
+            writer.write(fileHelper.START_TRANSITION);
+            writer.write("\n            <from>" + transition.fromState + "</from>&#13;");
+            writer.write("\n            <to>" + transition.toState + "</to>&#13;");
+            writer.write("\n            <read>" + transition.valueRead + "</read>&#13;");
+            writer.write(fileHelper.END_TRANSITION);
+        }
+
+        writer.write(fileHelper.FOOTER);
 
         writer.flush();
         writer.close();
