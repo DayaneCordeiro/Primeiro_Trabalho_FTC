@@ -1,3 +1,9 @@
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
 public class State {
     public String id;
     public String name;
@@ -14,5 +20,13 @@ public class State {
 
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    public static String[] getAutomatonStateLabels(@NotNull String label) {
+        String[] labels = label.split(",");
+
+        Arrays.sort(labels);
+
+        return labels;
     }
 }
