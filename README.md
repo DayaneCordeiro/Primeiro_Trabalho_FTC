@@ -9,7 +9,7 @@
 
 <p align="center">
   <a href="#dart-sobre">Sobre</a> &#xa0; | &#xa0; 
-  <a href="#atention-Importante">Importante</a> &#xa0; | &#xa0; 
+  <a href="#warning-importante">Importante</a> &#xa0; | &#xa0; 
   <a href="#sparkles-funcionamento">Funcionamento</a> &#xa0; | &#xa0;
   <a href="#rocket-tecnologias">Tecnologias</a> &#xa0; | &#xa0;
   <a href="#white_check_mark-requisitos">Requisitos</a> &#xa0; | &#xa0;
@@ -23,30 +23,30 @@
 
 <div align="justify">
 Desenvolvimento do primeiro trabalho acadêmico da disciplina Fundamentos Teóricos da Computação. Lecionada no curso de Engenharia de computação na Pontifícia Universidade Católica de Minas Gerais.
-
+<br><br>
 O objetivo deste trabalho é realizar a conversão de Automatos Finitos Não Determinísticos (AFN) em Automatos Finitos Determinísticos (AFD) equivalentes.
 </div>
 
-## :atention: Importante ##
+## :warning: Importante ##
 
 <div align="justify">
-- O software não consegue manipular AFN-λ ou outros tipos de automatos que não sejam nem AFD e nem AFN.
-- O alfabeto de entrada do automato deve ser apenas {0, 1}. Não sendo identificados outros caracteres.
+<li> O software não consegue manipular AFN-λ ou outros tipos de automatos que não sejam nem AFD e nem AFN.</li>
+<li> O alfabeto de entrada do automato deve ser apenas {0, 1}. Não sendo identificados outros caracteres.</li>
 </div>
 
 ## :sparkles: Funcionamento ##
 
 <div align="justify">
-A parte inicial do trabalho, deu-se na leitura de um arquivo de entrada com a extenção .jff gerado pelo software Jflap versão 7.0 encontrado no endereço: http://www.jflap.org/.
+A parte inicial do trabalho, deu-se na leitura de um arquivo de entrada com a extenção `.jff` gerado pelo software JFLAP versão 7.0 encontrado no endereço: http://www.jflap.org/.
+<br><br>
+O arquivo foi manipulado a fim de coletar as informações dos estados e transições do automato descrito em formato XML. Após a coleta destes dados, foi feita uma verificação para confirmar que a entrada do usuário é uma AFN. Caso seja um AFD, o arquivo de entrada é apenas copiado para o arquivo de saída que foi inserido no diretório `output/AFD.jff`. Neste caso, nenhuma lógica de conversão é utilizada.
+<br><br>
+Caso o arquivo de entrada seja realmente uma AFN, é iniciado o processo de conversão. Finalizado esse processo, a descrição XML do automato convertido equivalente irá se encontrar no arquivo AFD.jff dentro do diretório <b>output</b> na raiz do projeto.
+<br><br>
+A seguir, foi incluído um exemplo do funcionamento do conversor, utilizando-se do JFLAP para ferramenta de conferência. Do lado esquerdo da primeira imagem, verifica-se o AFN e do lado direito o AFD que o próprio JFLAP converteu.
 
-O arquivo foi manipulado a fim de coletar as informações dos estados e transições do automato descrito em formato XML. Após a coleta destes dados, foi feita uma verificação para confirmar que a entrada do usuário é uma AFN. Caso seja um AFD, o arquivo de entrada é apenas copiado para o arquivo de saída inserido no diretório <code>output/AFD.jff</code>. Neste caso, nenhuma lógica de conversão é utilizada.
 
-Caso o arquivo de entrada seja realmente uma AFN, é iniciado o processo de conversão. Finalizado esse processo, o automato convertido equivalente irá se encontrar no arquivo AFD.jff dentro do diretório output na raiz do projeto.
-
-A seguir, foi incluido um exemplo do funcionamento do conversor, utilizando-se do JFLAP para ferramenta de conferência. Do lado esquerdo da primeira imagem, verifica-se o AFN e do lado direito o AFD que o próprio JFLAP converteu.
-
-
-![Primeiro automato testado]()
+![Primeiro automato testado](https://github.com/DayaneCordeiro/Primeiro_Trabalho_FTC/blob/main/img/AFN.png)
 
 
 O código XML gerado pelo JFLAP para este automato foi o seguinte:
@@ -143,7 +143,7 @@ O código XML gerado pelo JFLAP para este automato foi o seguinte:
 O automato foi lido, manipulado e convertido pelo software e o resultado final encontra-se na imagem 2. Vale citar que a ordem das labels não é a mesma que a do JFLAP, porém a equivalencia não é afetada por este detalhe.
 
 
-![Automato convertido]()
+![Automato convertido](https://github.com/DayaneCordeiro/Primeiro_Trabalho_FTC/blob/main/img/AFD.png)
 
 
 O código XML gerado pelo conversor no arquivo de saída, foi o seguinte:
@@ -330,7 +330,7 @@ As seguintes ferramentas foram utilizadas neste projeto:
 1. Antes de iniciar, é necessário ter o Java instalado na máquina para executar o JFLAP.
 2. Para testar um automato, é necessário incluir o arquivo .jff na raiz do projeto e modificar a constante `INPUT_PATH` no arquivo FileHelper.java com o nome do novo arquivo.
 
-![Constante INPUT_PATH]()
+![Constante INPUT_PATH](https://github.com/DayaneCordeiro/Primeiro_Trabalho_FTC/blob/main/img/input_path.png)
 
 3. Após isso, basta executar o arquivo Main.java que o arquivo de saída será gerado. 
 4. Abrir o JFLAP, na aba File selecionar a opção Open e abrir o arquivo AFD.jff que está dentro da pasta output na raiz deste projeto.
@@ -342,7 +342,6 @@ Este projeto está sob a licença MIT. Para mais detalhes, veja o arquivo [LICEN
 
 
 ## :memo: Autora ##
-<h1>Autora</h1>
 <a href="https://github.com/DayaneCordeiro">
     <img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/50596100?v=4" width="150px;" alt=""/>
     <br />
