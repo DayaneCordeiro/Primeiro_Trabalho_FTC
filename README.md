@@ -37,7 +37,7 @@ O objetivo deste trabalho é realizar a conversão de Automatos Finitos Não Det
 ## :sparkles: Funcionamento ##
 
 <div align="justify">
-A parte inicial do trabalho, deu-se na leitura de um arquivo de entrada com a extenção `.jff` gerado pelo software JFLAP versão 7.0 encontrado no endereço: http://www.jflap.org/.
+A parte inicial do trabalho, deu-se na leitura de um arquivo de entrada com a extenção `.jff` gerado pelo software JFLAP versão 7.0 encontrado no endereço: https://www.jflap.org/jflaptmp/.
 <br><br>
 O arquivo foi manipulado a fim de coletar as informações dos estados e transições do automato descrito em formato XML. Após a coleta destes dados, foi feita uma verificação para confirmar que a entrada do usuário é uma AFN. Caso seja um AFD, o arquivo de entrada é apenas copiado para o arquivo de saída que foi inserido no diretório `output/AFD.jff`. Neste caso, nenhuma lógica de conversão é utilizada.
 <br><br>
